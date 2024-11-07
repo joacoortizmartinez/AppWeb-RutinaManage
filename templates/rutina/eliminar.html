@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Eliminar Rutina </title>
+    <style>
+       
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+    
+       
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+    
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+    
+        form select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+    
+        form button[type="submit"] {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+    
+        form button[type="submit"]:hover {
+            background-color: #575353;
+        }
+    
+        
+        @media (max-width: 768px) {
+            form {
+                padding: 1rem;
+            }
+    
+            form label {
+                font-size: 0.9rem;
+            }
+    
+            form select,
+            form button[type="submit"] {
+                font-size: 0.9rem;
+            }
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #1a1a1a; /* Color de fondo del botón */
+            color: #fff; /* Color del texto */
+            padding: 0.5rem 1rem; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            text-decoration: none; /* Sin subrayado */
+            position: absolute; /* Posicionamiento absoluto */
+            top: 1rem; /* Distancia desde la parte superior */
+            right: 1rem; /* Distancia desde la derecha */
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+.back-button:hover {
+    background-color: #333; /* Color al pasar el mouse */
+}
+
+        
+        @media (max-width: 768px) {
+            form {
+                padding: 1rem;
+            }
+
+            form label,
+            form select,
+            form button {
+                width: 100%;
+            }
+
+            table th,
+            table td {
+                padding: 0.5rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/" class="back-button">Volver al inicio</a>
+    <form method="post">
+        <label for="rutina">Selecciona una rutina para eliminar:</label>
+        
+        <select name="rutina" id="rutina">
+
+            <option value=""> </option>
+            {% for rutina in nombres %}
+                <option value="{{ rutina.nombre }}">{{ rutina.nombre }}</option>
+            {% else %}
+                <option value="">No hay rutinas disponibles</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit"> Eliminar </button>
+    </form>
+</body>
+</html>

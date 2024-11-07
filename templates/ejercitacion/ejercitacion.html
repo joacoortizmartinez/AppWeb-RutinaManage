@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        form select,
+        form input[type="number"],
+        form input[type="date"],
+        form input[type="submit"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        form input[type="submit"] {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #575353;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                padding: 1rem;
+            }
+
+            form label {
+                font-size: 0.9rem;
+            }
+
+            form select,
+            form input[type="number"],
+            form input[type="date"],
+            form input[type="submit"] {
+                font-size: 0.9rem;
+            }
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #1a1a1a; /* Color de fondo del botón */
+            color: #fff; /* Color del texto */
+            padding: 0.5rem 1rem; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            text-decoration: none; /* Sin subrayado */
+            position: absolute; /* Posicionamiento absoluto */
+            top: 1rem; /* Distancia desde la parte superior */
+            right: 1rem; /* Distancia desde la derecha */
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+        .back-button:hover {
+            background-color: #333; /* Color al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-button">Volver al inicio</a>
+    <form method="post">
+        <label for="rutina">Hoy hice... </label>
+        <select name="rutina" id="rutina" required>
+            <option value=""> </option>
+            {% for rutina in nombres %}
+                <option value="{{ rutina.nombre }}">{{ rutina.nombre }}</option>
+            {% else %}
+                <option value="">No hay rutinas disponibles</option>
+            {% endfor %}
+        </select>
+        
+        <input type="submit" name="buscar_ejercicios" value="Buscar Ejercicios">
+    </form>
+
+    {% if ejercicios_rutina %}
+        <form method="post">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+            <br><br>
+            {% for ejercicio in ejercicios_rutina %}
+                <label for="ejercicio_{{ ejercicio.ejercicio_nombre }}">{{ ejercicio.ejercicio_nombre }}</label>
+                <br><br>
+
+                <label for="series_{{ ejercicio.ejercicio_nombre }}">Series hechas: </label>
+                <input type="number" id="series_{{ ejercicio.ejercicio_nombre }}" name="series_{{ ejercicio.ejercicio_nombre }}">
+
+                <label for="repes_{{ ejercicio.ejercicio_nombre }}">Repes hechas (max): </label>
+                <input type="number" id="repes_{{ ejercicio.ejercicio_nombre }}" name="repes_{{ ejercicio.ejercicio_nombre }}">
+                
+                <label for="peso_{{ ejercicio.ejercicio_nombre }}">Peso max: </label>
+                <input type="number" id="peso_{{ ejercicio.ejercicio_nombre }}" name="peso_{{ ejercicio.ejercicio_nombre }}">
+                <br><br>
+            {% endfor %}
+            <input type="submit" name="guardar_progreso" value="Guardar Progreso">
+        </form>
+    {% endif %}
+
+    <main>
+        <section class="messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </section>
+        <section class="content">
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+</body>
+</html>

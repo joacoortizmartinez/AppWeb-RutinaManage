@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Rutinas</title>
+    <style>
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            margin: 2rem auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        form select,
+        form button {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        form button {
+            background-color: #1a1a1a;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #575353;
+        }
+
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        table th,
+        table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #1a1a1a; /* Color de fondo del botón */
+            color: #fff; /* Color del texto */
+            padding: 0.5rem 1rem; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            text-decoration: none; /* Sin subrayado */
+            position: absolute; /* Posicionamiento absoluto */
+            top: 1rem; /* Distancia desde la parte superior */
+            right: 1rem; /* Distancia desde la derecha */
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+        .back-button:hover {
+            background-color: #333; /* Color al pasar el mouse */
+        }
+
+        
+        @media (max-width: 768px) {
+            form {
+                padding: 1rem;
+            }
+
+            form label,
+            form select,
+            form button {
+                width: 100%;
+            }
+
+            table th,
+            table td {
+                padding: 0.5rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/" class="back-button">Volver al inicio</a>
+
+    <form method="post">
+        <label for="rutina">Selecciona una rutina:</label>
+        
+        <select name="rutina" id="rutina">
+
+            <option value=""> </option>
+            {% for rutina in nombres %}
+                <option value="{{ rutina.nombre }}">{{ rutina.nombre }}</option>
+            {% else %}
+                <option value="">No hay rutinas disponibles</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Ver Rutina</button>
+    </form>
+
+    {% if ejercicios_rutina %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Nombre Ejercicio</th>
+                    <th>Series</th>
+                    <th>Repeticiones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ejercicio in ejercicios_rutina %}
+                    <tr>
+                        <td>{{ ejercicio.categoria }}</td>
+                        <td>{{ ejercicio.ejercicio_nombre }}</td>
+                        <td>{{ ejercicio.series }}</td>
+                        <td>{{ ejercicio.repes }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    
+</body>
+</html>

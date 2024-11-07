@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Primeros Pasos</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #eaeaea;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 2rem 0;
+    color: #1a1a1a;
+}
+
+form {
+    max-width: 500px;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+
+form select,
+form input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form input[type="submit"] {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+form input[type="submit"]:hover {
+    background-color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    form {
+        padding: 1rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <form action="/first-steeps" method="post">
+
+        <label for="opciones">Que deseas:</label>
+        <select name="opciones" id="opciones">
+            <option value="ganar_masa">Ganar masa muscular</option>
+            <option value="perder_peso">Perder peso</option>
+        </select>
+
+        <br><br>
+
+        <label for="peso-actual"> Peso Actual: </label>
+        <input type="number" id="peso-actual" name="peso-actual" required>
+
+        <br><br>
+
+        <label for="peso-deseado"> Peso Deseado: </label>
+        <input type="number" id="peso-deseado" name="peso-deseado" required>
+
+        <br><br>
+
+        <label for="dias"> Dias en el Gym: </label>
+        <input type="number" id="dias" name="dias" required>
+
+        <br><br>
+
+        <input type="submit" value="Guardar">
+    </form>
+</body>
+</html>

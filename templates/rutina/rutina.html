@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Rutina</title>
+    <script>
+        function generarCampos() {
+            const cantidad = document.getElementById('cantidadEjercicios').value;
+            const container = document.getElementById('ejerciciosContainer');
+            container.innerHTML = ''; // Limpiar el contenedor
+
+            for (let i = 0; i < cantidad; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                <br><br>
+                    <label for="opciones_${i}">Buscar ejercicios por Categorías:</label>
+                    <select name="opciones_${i}" id="opciones_${i}" onchange="buscarEjercicios(${i})">
+                        <option value=""> </option>
+                        {% for categoria in Categorias %}
+                            <option value="{{ categoria.categoria }}">{{ categoria.categoria }}</option>
+                        {% endfor %}
+                    </select>
+
+                    
+
+                    <label for="ejercicios_${i}">Ejercicios:</label>
+                    <select name="ejercicios_${i}" id="ejercicios_${i}">
+                        <option value=""> </option>
+                    </select>
+                    
+
+                    <label for="series_${i}">Series:</label>
+                    <input id="series_${i}" type="number" name="series_${i}" value="" required>
+                    
+                    <label for="repes_${i}">Repeticiones:</label>
+                    <input id="repes_${i}" type="number" name="repes_${i}" value="" required>
+                    <br><br><br>
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        function buscarEjercicios(index) {
+            const categoria = document.getElementById(`opciones_${index}`).value;
+
+            if (categoria) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/buscar_ejercicios', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const ejercicios = JSON.parse(xhr.responseText);
+                        const ejerciciosSelect = document.getElementById(`ejercicios_${index}`);
+                        ejerciciosSelect.innerHTML = '<option value=""> </option>';
+
+                        ejercicios.forEach(function(ejercicio) {
+                            const option = document.createElement('option');
+                            option.value = ejercicio.nombre_ej;
+                            option.textContent = ejercicio.nombre_ej;
+                            ejerciciosSelect.appendChild(option);
+                        });
+                    }
+                };
+                xhr.send(`categoria=${categoria}`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            generarCampos();
+        });
+    </script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eaeaea;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form select {
+            width: calc(100% - 20px);
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+
+        form input[type="text"]:focus,
+        form input[type="number"]:focus,
+        form select:focus {
+            border-color: #888;
+            outline: none;
+        }
+
+        form input[type="submit"] {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            form {
+                padding: 1.5rem;
+            }
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #1a1a1a; /* Color de fondo del botón */
+            color: #fff; /* Color del texto */
+            padding: 0.5rem 1rem; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            text-decoration: none; /* Sin subrayado */
+            position: absolute; /* Posicionamiento absoluto */
+            top: 1rem; /* Distancia desde la parte superior */
+            right: 1rem; /* Distancia desde la derecha */
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+.back-button:hover {
+    background-color: #333; /* Color al pasar el mouse */
+}
+
+        
+        @media (max-width: 768px) {
+            form {
+                padding: 1rem;
+            }
+
+            form label,
+            form select,
+            form button {
+                width: 100%;
+            }
+
+            table th,
+            table td {
+                padding: 0.5rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/" class="back-button">Volver al inicio</a>
+    <h2>Agregar Rutina</h2>
+    <form action="/rutina" method="post">
+        <label for="nombredia">Hoy día de...</label>
+        <input id="nombredia" type="text" name="nombredia" value="{{ nombredia }}" required>
+        <br><br>
+
+        <label for="cantidadEjercicios">Cantidad de Ejercicios:</label>
+        <input id="cantidadEjercicios" type="number" name="cantidadEjercicios" value="1" min="1" onchange="generarCampos()" required>
+
+
+        <div id="ejerciciosContainer"></div>
+        
+        <input type="submit" value="Guardar Rutina">
+    </form>
+</body>
+</html>

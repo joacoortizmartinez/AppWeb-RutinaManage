@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Rutinas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a, nav ul li button {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav ul li a:hover, nav ul li button:hover {
+            color: #00aaff;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .messages {
+            margin-bottom: 2rem;
+        }
+
+        .messages .alert {
+            background-color: #ffdddd;
+            border-left: 6px solid #f44336;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+
+        .messages .alert p {
+            margin: 0;
+        }
+
+        .content {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .content {
+            max-width: 800px; /* Ancho máximo de la sección */
+            margin: 2rem auto; /* Centrar la sección en la página */
+            background-color: #fff; /* Color de fondo de la sección */
+            padding: 2rem; /* Espaciado interno */
+            border-radius: 8px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra de la sección */
+        }
+
+        .content p {
+            font-size: 1.5rem; /* Tamaño de la fuente del título */
+            font-weight: bold; /* Negrita */
+            color: #1a1a1a; /* Color del texto */
+            margin-bottom: 1.5rem; /* Espaciado inferior */
+            text-align: center; /* Centrar el texto */
+        }
+
+        table {
+            width: 100%; /* Ancho completo de la tabla */
+            border-collapse: collapse; /* Colapsar bordes */
+            margin-top: 1rem; /* Espaciado superior de la tabla */
+        }
+
+        thead {
+            background-color: #1a1a1a; /* Color de fondo del encabezado */
+            color: #fff; /* Color del texto en el encabezado */
+        }
+
+        th, td {
+            padding: 0.75rem; /* Espaciado interno de celdas */
+            text-align: center; /* Centrar el texto en las celdas */
+            border: 1px solid #ccc; /* Bordes de las celdas */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Color de fondo de las filas pares */
+        }
+
+        tbody tr:hover {
+            background-color: #eaeaea; /* Color de fondo al pasar el mouse */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+        }
+
+    
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        function buscarEnGoogle() {
+            var nuevaVentana = window.open("https://www.google.com", "_blank");
+            nuevaVentana.focus();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Rutina Manage</div>
+            <ul>
+                <li><a href="{{ url_for('rutina') }}"><i class="fas fa-plus-circle"></i> Agregar Rutina</a></li>
+                <li><a href="{{ url_for('ver_rutinas') }}"><i class="fas fa-eye"></i> Ver Rutinas</a></li>
+                <li><a href="{{ url_for('eliminar_rutina') }}"><i class="fas fa-trash-alt"></i> Eliminar Rutina</a></li>
+                <li><a href="{{ url_for('rutina_hecha') }}"><i class="fas fa-trash-alt"></i> Marcar Rutina Hecha</a></li>
+                
+                <li>
+                    <form action="{{ url_for('cerrar_sesion') }}" method="post" style="display: inline;">
+                        <button type="submit">
+                            <i class="fas fa-trash-alt"></i> Cerrar Sesión
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </section>
+        <section class="content">
+            {% block content %}
+            <p> Ultimos ejercicios</p>
+            {% if ejercicios_rutina %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th> nombre </th>
+                            <th> series </th>
+                            <th> repes </th>
+                            <th> peso </th>
+                            <th> fecha </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ejercicio in ejercicios_rutina %}
+                            <tr>
+                                <td>{{ ejercicio.nombre }}</td>
+                                <td>{{ ejercicio.series }}</td>
+                                <td>{{ ejercicio.repes }}</td>
+                                <td>{{ ejercicio.peso }}</td>
+                                <td>{{ ejercicio.fecha }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% endblock %}
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Rutina Manage. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

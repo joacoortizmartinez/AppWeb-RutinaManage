@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        form input[type="submit"] {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #474747;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .login-link a {
+            color: #000000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #918d8d;
+        }
+
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .flashes li {
+            background-color: #ffdddd;
+            border-left: 6px solid #f44336;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/sign-up" method="POST">
+        <label for="user">User:</label>
+        <input type="text" id="user" name="user" required>
+
+        <label for="mail">Mail:</label>
+        <input type="email" id="mail" name="mail" required>
+
+        <label for="pass">Password:</label>
+        <input type="password" id="pass" name="pass" required>
+
+        <input type="submit" value="Register">
+        <br><br>
+
+        <div class="login-link">
+            <a href="/login">Ir a Iniciar Sesión</a>
+        </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+    </form>
+</body>
+</html>

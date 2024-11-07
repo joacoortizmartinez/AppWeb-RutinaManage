@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Alimentos</title>
+  </head>
+  <body>
+    <h1>Buscar Alimentos</h1>
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+      <label for="food_item">Nombre del alimento:</label>
+      <input type="text" id="food_item" name="food_item">
+      <button type="submit">Buscar</button>
+    </form>
+  </body>
+</html>
